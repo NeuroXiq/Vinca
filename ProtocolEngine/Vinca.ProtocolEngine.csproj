@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{07FD5A4F-E607-4762-AF27-5FC6F837849F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ProtocolEngine</RootNamespace>
+    <AssemblyName>ProtocolEngine</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\Filter\Authentication.cs" />
+    <Compile Include="Configuration\Filter\Charset.cs" />
+    <Compile Include="Configuration\Filter\FilterConfig.cs" />
+    <Compile Include="Configuration\Filter\Redirection.cs" />
+    <Compile Include="Configuration\InternalEngineConfig\InternalEngineConfiguration.cs" />
+    <Compile Include="Configuration\Parser\ConfigParser.cs" />
+    <Compile Include="Configuration\Server\Cache.cs" />
+    <Compile Include="Configuration\Server\ServerConfig.cs" />
+    <Compile Include="Configuration\Server\Tls.cs" />
+    <Compile Include="ConnectionHandler\HttpStreamMarshal.cs" />
+    <Compile Include="ConnectionHandler\ProtocolEnum.cs" />
+    <Compile Include="ConnectionHandler\SocketHandler.cs" />
+    <Compile Include="ConnectionHandler\SslHandler.cs" />
+    <Compile Include="ConnectionHandler\TcpSocketHandler.cs" />
+    <Compile Include="Engine\ConfigFileValidator.cs" />
+    <Compile Include="Engine\EngineInitializationFactory.cs" />
+    <Compile Include="Engine\Enum\ProtocolEnum.cs" />
+    <Compile Include="Engine\Exception\HttpEngineInitializationException.cs" />
+    <Compile Include="Engine\Http1Engine\AbstractLayerImplementation\Filter.cs" />
+    <Compile Include="Engine\Http1Engine\AbstractLayer\IFilter.cs" />
+    <Compile Include="Engine\Http1Engine\AbstractLayer\IHtdocsSystem.cs" />
+    <Compile Include="Engine\Http1Engine\Exceptions\MessageStreamReaderException.cs" />
+    <Compile Include="Engine\Http1Engine\Exceptions\VhostSwitchException.cs" />
+    <Compile Include="Engine\Http1Engine\FilterFactory.cs" />
+    <Compile Include="Engine\Http1Engine\Http1ClientSession.cs" />
+    <Compile Include="Engine\Http1Engine\Http1Session.cs" />
+    <Compile Include="Engine\Http1Engine\Interpreter.cs" />
+    <Compile Include="Engine\Http1Engine\Session.cs" />
+    <Compile Include="Engine\HttpEngine.cs" />
+    <Compile Include="GlobalConsoleDebug.cs" />
+    <Compile Include="Engine\Http1Engine\MessageStreamReader.cs" />
+    <Compile Include="Engine\HttpMarshal.cs" />
+    <Compile Include="HtdocsResourcesManagement\HtdocsSystem\HtdocsCacheSystem.cs" />
+    <Compile Include="HtdocsResourcesManagement\HtdocsSystem\HtdocsDefaultSystem.cs" />
+    <Compile Include="HtdocsResourcesManagement\PathResolver.cs" />
+    <Compile Include="Http\Http1\Formatters\HfBinaryFormatter.cs" />
+    <Compile Include="Http\Http1\Formatters\ResponseFormatter.cs" />
+    <Compile Include="Http\Http1\Parser\Exceptions\HeaderFieldParserException.cs" />
+    <Compile Include="Http\Http1\Parser\Exceptions\RequestParserException.cs" />
+    <Compile Include="Http\Http1\Parser\HeaderFieldParser.cs" />
+    <Compile Include="Http\Http1\Parser\FuncHashTable.cs" />
+    <Compile Include="Http\Http1\Parser\RequestHeaderParser.cs" />
+    <Compile Include="Http\Http1\Protocol\Enum\ConnectionTypeEnum.cs" />
+    <Compile Include="Http\Http1\Protocol\Enum\ContentEncodingTypeEnum.cs" />
+    <Compile Include="Http\Http1\Protocol\ResponseHeader.cs" />
+    <Compile Include="Http\Http1\Protocol\Enum\StatusCodeEnum.cs" />
+    <Compile Include="HtdocsResourcesManagement\MimeMapper.cs" />
+    <Compile Include="Http\Http1\Parser\RequestTargetParser.cs" />
+    <Compile Include="Http\Http1\Protocol\StandardRequestHFDefinitions.cs" />
+    <Compile Include="Http\Http1\Protocol\StandardResponseHFDefinitions.cs" />
+    <Compile Include="Http\Http1\Protocol\Exceptions\HeaderFieldParseException.cs" />
+    <Compile Include="Http\Http1\Protocol\HeaderFieldsContainer.cs" />
+    <Compile Include="Http\Http1\Protocol\Enum\HFTypeEnum.cs" />
+    <Compile Include="Http\Http1\Protocol\MessageFormatConsts.cs" />
+    <Compile Include="Http\Http1\Protocol\Enum\HttpMethodEnum.cs" />
+    <Compile Include="Http\Http1\Protocol\RequestHeader.cs" />
+    <Compile Include="Http\Http1\Protocol\HttpVersion.cs" />
+    <Compile Include="Http\Http1\Protocol\IHeaderField.cs" />
+    <Compile Include="Http\Http1\Protocol\RequestTarget.cs" />
+    <Compile Include="Http\Http1\Protocol\Map\StatusCodeMapper.cs" />
+    <Compile Include="MemoryManagement\BufferPool.cs" />
+    <Compile Include="MemoryManagement\DynamicBuffer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

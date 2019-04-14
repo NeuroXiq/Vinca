@@ -1,0 +1,7 @@
+IGNORE/
+/*/bin
+/*/obj
+
+!/*/bin
+/*/bin/*
+!/*/bin/Configuration
