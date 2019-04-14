@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Sockets;
 using ProtocolEngine.ConnectionHandler;
 using ProtocolEngine.Engine.Http1Engine;
+using ProtocolEngine;
 
 namespace Vinca.ProtocolEngine.Engine
 {
@@ -20,6 +21,17 @@ namespace Vinca.ProtocolEngine.Engine
         {
             if (protocol == Protocol.Http11)
             {
+                Session s = new Session(ioStream);
+                try
+                {
+                    h1Interpreter.Start(s);
+                }
+                catch (Exception e)
+                {
+                    GlobalConsoleDebug.ShowInternalError(e);
+                    
+                }
+                
                 // BuildHttp1Session(ioStream);
                 // http1interpreter.Start(session);
                 //

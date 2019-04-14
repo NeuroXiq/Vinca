@@ -3,7 +3,7 @@
 namespace ProtocolEngine.Configuration.Server
 {
     [Serializable]
-    class Tls
+    public class Tls
     {
         public string Path;
         public string Password;

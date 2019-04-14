@@ -41,10 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\Filter\Authentication.cs" />
-    <Compile Include="Configuration\Filter\Charset.cs" />
     <Compile Include="Configuration\Filter\FilterConfig.cs" />
-    <Compile Include="Configuration\Filter\Redirection.cs" />
     <Compile Include="Configuration\InternalEngineConfig\InternalEngineConfiguration.cs" />
     <Compile Include="Configuration\Parser\ConfigParser.cs" />
     <Compile Include="Configuration\Server\Cache.cs" />
@@ -59,14 +56,15 @@
     <Compile Include="Engine\EngineInitializationFactory.cs" />
     <Compile Include="Engine\Enum\ProtocolEnum.cs" />
     <Compile Include="Engine\Exception\HttpEngineInitializationException.cs" />
-    <Compile Include="Engine\Http1Engine\AbstractLayerImplementation\Filter.cs" />
+    <Compile Include="Engine\Http1Engine\AbstractLayerImplementation\AuthenticationFilter.cs" />
+    <Compile Include="Engine\Http1Engine\AbstractLayerImplementation\DispositionFilter.cs" />
+    <Compile Include="Engine\Http1Engine\AbstractLayerImplementation\ForbiddenFilter.cs" />
+    <Compile Include="Engine\Http1Engine\AbstractLayerImplementation\RedirectionFilter.cs" />
     <Compile Include="Engine\Http1Engine\AbstractLayer\IFilter.cs" />
     <Compile Include="Engine\Http1Engine\AbstractLayer\IHtdocsSystem.cs" />
     <Compile Include="Engine\Http1Engine\Exceptions\MessageStreamReaderException.cs" />
     <Compile Include="Engine\Http1Engine\Exceptions\VhostSwitchException.cs" />
     <Compile Include="Engine\Http1Engine\FilterFactory.cs" />
-    <Compile Include="Engine\Http1Engine\Http1ClientSession.cs" />
-    <Compile Include="Engine\Http1Engine\Http1Session.cs" />
     <Compile Include="Engine\Http1Engine\Interpreter.cs" />
     <Compile Include="Engine\Http1Engine\Session.cs" />
     <Compile Include="Engine\HttpEngine.cs" />

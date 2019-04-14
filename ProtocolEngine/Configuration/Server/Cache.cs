@@ -3,7 +3,7 @@
 namespace ProtocolEngine.Configuration.Server
 {
     [Serializable]
-    class Cache
+    public class Cache
     {
         public int MinFileLength;
         public int MaxFileLength;

@@ -3,7 +3,7 @@
 namespace ProtocolEngine.Configuration.Server
 {
     [Serializable]
-    class ServerConfig
+    public class ServerConfig
     {
         public int Port;
         public string HostName;

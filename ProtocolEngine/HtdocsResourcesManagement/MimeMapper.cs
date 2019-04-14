@@ -3,19 +3,27 @@ using System.IO;
 
 namespace ProtocolEngine.HtdocsResourcesManagement
 {
-    public class MimeMapper
+    class MimeMapper
     {
         static Dictionary<string, string> extensionToMimeMap;
+        PathResolver pathResolver;
 
         const string UnknowMimeString = "application/octet-stream";
 
-        public MimeMapper(Dictionary<string, string> extToMimeMap)
+        public MimeMapper(Dictionary<string, string> extToMimeMap, PathResolver pathResolver)
         {
             extensionToMimeMap = extToMimeMap;
+            this.pathResolver = pathResolver;
         }
 
         public string GetMime(string fileName)
         {
+
+            fileName = pathResolver.ToAbsolute(fileName);
+            if (fileName.EndsWith("img_1.jpg"))
+            {
+                string a = "";
+            }
             int extensionStart = fileName.LastIndexOf('.') + 1;
 
             if (extensionStart < 1 || extensionStart >= fileName.Length)
@@ -35,11 +43,11 @@ namespace ProtocolEngine.HtdocsResourcesManagement
             return UnknowMimeString;   
         }
 
-        public static MimeMapper FromApacheFile(string path)
+        public static MimeMapper FromApacheFile(string path, PathResolver pathResolver)
         {
             Dictionary<string, string> extToMime = ParseApacheFile(path);
 
-            return new MimeMapper(extToMime);
+            return new MimeMapper(extToMime, pathResolver);
         }
 
         private static Dictionary<string, string> ParseApacheFile(string path)

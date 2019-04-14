@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<FilterConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Authentication>
+    <UserName>Username</UserName>
+    <Password>Password</Password>
+  </Authentication>
+  <Disposition>
+    <RegexFileName>Disposition File Name</RegexFileName>
+  </Disposition>
+  <Redirection>
+    <RegexPath>regex path rediretcion</RegexPath>
+    <Location>location</Location>
+    <StatusCode>300</StatusCode>
+  </Redirection>
+  <Forbidden>
+    <RegexName>forbidden regex</RegexName>
+  </Forbidden>
+</FilterConfig>

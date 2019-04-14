@@ -31,7 +31,7 @@ namespace ProtocolEngine.Engine
             this.filterConfig = filterConfig;
 
             pathResolver = new PathResolver(serverConfig.RootDirectory);
-            mimeMapper = MimeMapper.FromApacheFile(InternalEngineConfiguration.DirectoryTree.ApacheMimeTypesFileRelativePath);
+            mimeMapper = MimeMapper.FromApacheFile(InternalEngineConfiguration.DirectoryTree.ApacheMimeTypesFileRelativePath, pathResolver);
             httpStreamMarshal = BuildHttpStreamMarshal();
         }
 
@@ -67,11 +67,9 @@ namespace ProtocolEngine.Engine
 
         internal IHtdocsSystem BuildHtdocsSystem()
         {
-            string apacheFile = InternalEngineConfiguration.DirectoryTree.ApacheMimeTypesFileRelativePath;
-
             if (serverConfig.CacheConfiguration == null)
             {
-                return new HtdocsDefaultSystem(pathResolver, mimeMapper);
+                return new HtdocsDefaultSystem(pathResolver);
                 //return new HtdocsDefaultSystem
             }
             else
@@ -99,7 +97,7 @@ namespace ProtocolEngine.Engine
 
         internal IFilter[] BuildFilters()
         {
-            Fi
+            return null;
         }
     }
 }

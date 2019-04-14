@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ServerConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Port>80</Port>
+  <HostName>localhost</HostName>
+  <RootDirectory>D:\VINCA_TEST_WEBSITE\</RootDirectory>
+</ServerConfig>

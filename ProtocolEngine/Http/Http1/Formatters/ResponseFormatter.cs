@@ -29,12 +29,11 @@ namespace ProtocolEngine.Http.Http1.Formatters
 
             for (int i = 0; i < header.FieldsCount; i++)
             {
+                
                 writedCount += hfBinaryFormatter.FormatBinaryLine(buffer, writedCount + offset, header.GetField(i));
             }
-
             buffer[writedCount + 0] = (byte)'\r';
             buffer[writedCount + 1] = (byte)'\n';
-
             return writedCount + 2;
         }
     }

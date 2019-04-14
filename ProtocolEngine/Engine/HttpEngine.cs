@@ -1,5 +1,4 @@
-﻿using System;
-using ProtocolEngine.Configuration.Filter;
+﻿using ProtocolEngine.Configuration.Filter;
 using ProtocolEngine.ConnectionHandler;
 using ProtocolEngine.Configuration.Server;
 using Vinca.ProtocolEngine.Engine;
@@ -30,8 +29,8 @@ namespace ProtocolEngine.Engine
         
         private static HttpEngine Initialize(string serverConfigFileName, string filterConfigFileName)
         {
-            FilterConfig filterConfig = GetFilterConfig(serverConfigFileName);
-            ServerConfig serverConfig = GetServerConfig(filterConfigFileName);
+            FilterConfig filterConfig = GetFilterConfig(filterConfigFileName);
+            ServerConfig serverConfig = GetServerConfig(serverConfigFileName);
             ConfigFileValidator.ThrowIfInvalidFilterConfig(filterConfig);
             ConfigFileValidator.ThrowIfInvalidServerConfig(serverConfig);
 

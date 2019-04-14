@@ -20,7 +20,7 @@ namespace Vinca.ProtocolEngine.Configuration.InternalEngineConfiguration
         internal static class HttpEngineConfig
         {
             //TODO Extend this size
-            public static int MaxHeaderLength = 4096;
+            public static int MaxHeaderLength = 123456;
         }
 
         internal static class BufferPoolConfig
