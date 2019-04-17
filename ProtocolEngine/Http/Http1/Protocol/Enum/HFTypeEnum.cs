@@ -27,6 +27,8 @@
         Server,
         Date,
         ContentType,   
+        Location,
+        WWWAuthenticate,
         Undefined,
         
     }

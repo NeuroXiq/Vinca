@@ -16,7 +16,7 @@ namespace ProtocolEngine.Http.Http1.Formatters
         static FormatValueFunc[] FormatFuncs;
         static LengthFunc[] LenFuncs;
         static byte[][] BinaryHeaderName;
-            
+
         static HfBinaryFormatter()
         {
             InitFormatter();
@@ -33,7 +33,11 @@ namespace ProtocolEngine.Http.Http1.Formatters
             InsertFormatterInfo(HFType.Date, "Date:", FormatDate, FormattedDateLength);
             InsertFormatterInfo(HFType.ContentType, "Content-Type:", FormatContentType, FormattedContentTypeLength);
             InsertFormatterInfo(HFType.ContentEncoding, "Content-Encoding:", FormatContentEncoding, FormattedContentEncodingLength);
+            InsertFormatterInfo(HFType.Location, "Location:", FormatLocation, FormattedLocationLength);
+            InsertFormatterInfo(HFType.WWWAuthenticate, "WWW-Authenticate:", FormatWWWAuthenticate, FormattedWWWAuthenticateLength);
         }
+
+        
 
         private static void InsertFormatterInfo(HFType type, string hfName, FormatValueFunc fvf, LengthFunc lf)
         {
@@ -271,5 +275,33 @@ namespace ProtocolEngine.Http.Http1.Formatters
             }
         }
 
+
+        private static int FormattedLocationLength(IHeaderField field)
+        {
+            LocationHf location = (LocationHf)field;
+            return location.Location.Length;
+        }
+
+        private static int FormatLocation(byte[] buffer, int offset, IHeaderField headerField)
+        {
+            LocationHf location = (LocationHf)headerField;
+
+            return Encoding.ASCII.GetBytes(location.Location, 0, location.Location.Length, buffer, offset);
+        }
+
+        private static int FormattedWWWAuthenticateLength(IHeaderField field)
+        {
+            WWWAuthenticateHf authHf = (WWWAuthenticateHf)field;
+            int len = authHf.Realm.Length + authHf.Charset.Length + 26;
+
+            return len;
+        }
+
+        private static int FormatWWWAuthenticate(byte[] buffer, int offset, IHeaderField field)
+        {
+            WWWAuthenticateHf authHf = (WWWAuthenticateHf)field;
+            string result = string.Format("Basic realm=\"{0}\", charset=\"{1}\"", authHf.Realm, authHf.Charset);
+            return Encoding.ASCII.GetBytes(result, 0, result.Length, buffer, offset);
+        }
     }
 }

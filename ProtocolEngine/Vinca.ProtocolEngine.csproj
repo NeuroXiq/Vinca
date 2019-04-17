@@ -59,12 +59,13 @@
     <Compile Include="Engine\Http1Engine\AbstractLayerImplementation\AuthenticationFilter.cs" />
     <Compile Include="Engine\Http1Engine\AbstractLayerImplementation\DispositionFilter.cs" />
     <Compile Include="Engine\Http1Engine\AbstractLayerImplementation\ForbiddenFilter.cs" />
+    <Compile Include="Engine\Http1Engine\AbstractLayerImplementation\StaticInjectFilter.cs" />
     <Compile Include="Engine\Http1Engine\AbstractLayerImplementation\RedirectionFilter.cs" />
-    <Compile Include="Engine\Http1Engine\AbstractLayer\IFilter.cs" />
+    <Compile Include="Engine\Http1Engine\AbstractLayer\IFieldInjectFilter.cs" />
     <Compile Include="Engine\Http1Engine\AbstractLayer\IHtdocsSystem.cs" />
+    <Compile Include="Engine\Http1Engine\AbstractLayer\IPayloadIgnoreFilter.cs" />
     <Compile Include="Engine\Http1Engine\Exceptions\MessageStreamReaderException.cs" />
     <Compile Include="Engine\Http1Engine\Exceptions\VhostSwitchException.cs" />
-    <Compile Include="Engine\Http1Engine\FilterFactory.cs" />
     <Compile Include="Engine\Http1Engine\Interpreter.cs" />
     <Compile Include="Engine\Http1Engine\Session.cs" />
     <Compile Include="Engine\HttpEngine.cs" />

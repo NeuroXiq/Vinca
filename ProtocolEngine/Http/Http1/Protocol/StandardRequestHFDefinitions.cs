@@ -107,4 +107,22 @@ namespace ProtocolEngine.Http.Http1.Protocol
             QValueCodings = qvalueCodings;
         }
     }
+
+    //
+    // Authorization
+    //
+
+    public struct AuthorizationHf : IHeaderField
+    {
+        public HFType Type { get { return HFType.Authorization; } }
+
+        public string UserName;
+        public string Password;
+
+        public AuthorizationHf(string userName, string password)
+        {
+            UserName = userName;
+            Password = password;
+        }
+    }
 }

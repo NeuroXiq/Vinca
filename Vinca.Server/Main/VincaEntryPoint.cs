@@ -19,6 +19,7 @@ namespace Vinca.Server.Main
         {
             HttpEngine engine = HttpEngine.Initialize();
             httpEngine = engine;
+            System.Console.WriteLine("Init ok");
             Start();
         }
 

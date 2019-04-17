@@ -1,4 +1,5 @@
 ﻿using ProtocolEngine.Engine.Http1Engine.AbstractLayer;
+using ProtocolEngine.Engine.Http1Engine.AbstractLayerImplementation;
 using ProtocolEngine.HtdocsResourcesManagement;
 using ProtocolEngine.Http.Http1.Formatters;
 using ProtocolEngine.Http.Http1.Protocol;
@@ -14,15 +15,17 @@ namespace ProtocolEngine.Engine.Http1Engine
     {
         IHtdocsSystem htdocsSystem;
 
-        IFilter[] customFilters;
-        IFilter[] constantFilters;
+        IFieldInjectFilter[] customInjectFilters;
+        IPayloadIgnoreFilter[] customPIgnoreFilters;
         MimeMapper mimeMapper;
 
-        public Interpreter(IHtdocsSystem htdocsSystem, IFilter[] customFilters, MimeMapper mimeMapper)
+        public Interpreter(IHtdocsSystem htdocsSystem, IFieldInjectFilter[] customFI, IPayloadIgnoreFilter[] customPF, MimeMapper mimeMapper)
         {
             this.htdocsSystem = htdocsSystem;
-            this.customFilters = customFilters;
             this.mimeMapper = mimeMapper;
+            this.customInjectFilters = customFI;
+            this.customPIgnoreFilters = customPF;
+
         }
 
 
@@ -34,78 +37,73 @@ namespace ProtocolEngine.Engine.Http1Engine
                 RequestHeader requestHeader = session.CurrentHeader;
                 ResponseHeader responseSession = new ResponseHeader();
 
-                bool sendPayload = Filter(requestHeader, responseSession);
+                bool sendPayload = GoPayloadIgnoreFilters(requestHeader, responseSession);
 
                 if (sendPayload)
-                    AddPayloadFields(requestHeader, responseSession);
-
-
-                if (sendPayload)
-                    responseSession.StatusCode = StatusCode.OK;
-
-                AddCommonResponseFields(responseSession);
-
-                string fn = session.CurrentHeader.Target.Path;
-                if (fn.EndsWith("jpg"))
                 {
-                    string asd = "asdf";
+                    GoInjectFilters(requestHeader, responseSession);
                 }
 
+                InjectCommonFields(requestHeader, responseSession);
+
+                if (sendPayload)
+                {
+                    responseSession.StatusCode = StatusCode.OK;
+                    InjectPayloadFields(requestHeader, responseSession);
+                }
+                else responseSession.Add(new ContentLengthHf(0));
                 SendHeader(session, responseSession);
-
-                
-
-                if (sendPayload && requestHeader.Method == HttpMethod.GET)
+                if (sendPayload & requestHeader.Method == HttpMethod.GET)
+                {
                     SendPayload(session, responseSession);
-
+                }
+                
             } while (KeepConnection(session));
         }
 
-        private void AddPayloadFields(RequestHeader requestHeader, ResponseHeader responseSession)
+        private void InjectPayloadFields(RequestHeader requestHeader, ResponseHeader responseSession)
         {
-            string fileName = requestHeader.Target.Path;
+            string fname = requestHeader.Target.Path;
+            string mime = mimeMapper.GetMime(fname);
+            long len = htdocsSystem.GetLength(fname, EncodingType.Identity);
 
-            string mime = mimeMapper.GetMime(fileName);
-            long len = htdocsSystem.GetLength(fileName, EncodingType.Identity);
-            //string etag = htdocsSystem.GetETag(fileName, EncodingType.Identity);
-            
-
-
-            responseSession.Add(new ContentTypeHf(mime));
-            //responseSession.Add(new UndefinedHf("Accept-Range", "bytes"));
-            responseSession.Add(new ContentEncodingHf(EncodingType.Identity));
-            //responseSession.Add(new UndefinedHf("ETag", etag));
             responseSession.Add(new ContentLengthHf(len));
+            responseSession.Add(new ContentTypeHf(mime));
+
 
         }
 
-        private bool Filter(RequestHeader requestHeader, ResponseHeader responseSession)
+        private void InjectCommonFields(RequestHeader requestHeader, ResponseHeader responseSession)
         {
-            if (htdocsSystem.FileExists(requestHeader.Target.Path))
+            responseSession.Add(new ServerHf("Vinca/0.8"));
+            responseSession.Add(new DateHf(DateTime.Now));
+        }
+
+        private void GoInjectFilters(RequestHeader requestHeader, ResponseHeader responseSession)
+        {
+            if (customInjectFilters != null)
             {
-                return true;
+                foreach (IFieldInjectFilter injectFilter in customInjectFilters)
+                {
+                    if (injectFilter != null)
+                    {
+                        injectFilter.InjectField(requestHeader, responseSession);
+                    }
+                }
             }
-            else
+        }
+
+        private bool GoPayloadIgnoreFilters(RequestHeader requestHeader, ResponseHeader responseHeader)
+        {
+            if (customPIgnoreFilters != null)
             {
-                responseSession.StatusCode = StatusCode.NotFound;
-                responseSession.Add(new ContentLengthHf(0));
-                return false;
-            }
-
-
-
-
-
-            foreach (IFilter filter in customFilters)
-            {
-                if (!filter.Check(requestHeader, responseSession))
-                    return false;
-            }
-
-            foreach (IFilter filter in constantFilters)
-            {
-                if (!filter.Check(requestHeader, responseSession))
-                    return false;
+                foreach (IPayloadIgnoreFilter piFilter in customPIgnoreFilters)
+                {
+                    if (piFilter != null)
+                    {
+                        if (!piFilter.Check(requestHeader, responseHeader)) return false;
+                    }
+                }
             }
 
             return true;
@@ -146,13 +144,6 @@ namespace ProtocolEngine.Engine.Http1Engine
                 throw;
             }
             BufferPool.Free(buf);
-        }
-
-        private void AddCommonResponseFields(ResponseHeader responseSession)
-        {
-            responseSession.Add(
-                new DateHf(DateTime.Now),
-                new ServerHf(" Vinca/0.8"));
         }
 
         private bool KeepConnection(Session session)

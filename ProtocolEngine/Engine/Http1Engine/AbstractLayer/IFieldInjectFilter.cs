@@ -3,8 +3,8 @@ using Vinca.ProtocolEngine.Http1.Protocol;
 
 namespace ProtocolEngine.Engine.Http1Engine.AbstractLayer
 {
-    interface IFilter
+    interface IFieldInjectFilter
     {
-        bool Check(RequestHeader requestHeader, ResponseHeader response);
+        void InjectField(RequestHeader requestHeader, ResponseHeader responseSession);
     }
 }

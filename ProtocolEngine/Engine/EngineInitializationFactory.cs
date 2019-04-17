@@ -10,6 +10,8 @@ using System.Security.Cryptography.X509Certificates;
 using Vinca.ProtocolEngine.Engine;
 using ProtocolEngine.Engine.Http1Engine;
 using System.IO;
+using ProtocolEngine.Engine.Http1Engine.AbstractLayerImplementation;
+using System.Collections.Generic;
 
 namespace ProtocolEngine.Engine
 {
@@ -37,11 +39,26 @@ namespace ProtocolEngine.Engine
 
         public HttpStreamMarshal BuildHttpStreamMarshal()
         {
-            Interpreter interpreter = new Interpreter(BuildHtdocsSystem(), BuildFilters(), mimeMapper);
+            Interpreter interpreter = new Interpreter(BuildHtdocsSystem(), BuildInjectFilters(), BuildPayloadIgnoreFilters(), mimeMapper);
 
             HttpMarshal marshal = new HttpMarshal(interpreter);
 
             return marshal;
+        }
+
+        private IFieldInjectFilter[] BuildInjectFilters()
+        {
+            return new IFieldInjectFilter[] { filterConfig.Disposition };
+        }
+
+        private IPayloadIgnoreFilter[] BuildPayloadIgnoreFilters()
+        {
+            return new IPayloadIgnoreFilter[]
+            {
+                filterConfig.Authentication,
+                filterConfig.Forbidden,
+                filterConfig.Redirection
+            };
         }
 
         public SocketHandler BuildSocketHandler()
@@ -93,11 +110,6 @@ namespace ProtocolEngine.Engine
 
                 return HtdocsCacheSystem.CreateNew(serverConfig.CacheConfiguration.Directory, serverConfig.RootDirectory, cinfo);
             }
-        }
-
-        internal IFilter[] BuildFilters()
-        {
-            return null;
         }
     }
 }

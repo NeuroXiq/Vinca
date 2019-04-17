@@ -29,6 +29,7 @@ namespace ProtocolEngine.Http.Http1.Parser
             hashTable.Add("Connection", ParseConnection);
             hashTable.Add("Accept-Encoding", ParseAcceptEncoding);
             hashTable.Add("TE", ParseTE);
+            hashTable.Add("Authorization", ParseAuthorization);
         }
 
         //
@@ -235,6 +236,32 @@ namespace ProtocolEngine.Http.Http1.Parser
 
             qvalue = qvalueString;
             return encodingString;
+        }
+
+        //
+        // Authorization
+        //
+
+        private static IHeaderField ParseAuthorization(byte[] buffer, int valueOffset, int valueLength)
+        {
+            string value = Encoding.ASCII.GetString(buffer, valueOffset, valueLength);
+            value = value.Trim();
+            string[] valueData = value.Split(' ');
+
+            string base64Credentials = valueData[1];
+            byte[] credentialsBytes  = Convert.FromBase64String(base64Credentials);
+            string credentials = Encoding.ASCII.GetString(credentialsBytes);
+
+            string[] credData = credentials.Split(':');
+            if (credData.Length != 2)
+                throw new HeaderFieldParserException("Invalid data of authorization value");
+
+            string userName = credData[0];
+            string password = credData[1];
+
+            AuthorizationHf authHf = new AuthorizationHf(userName, password);
+
+            return authHf;
         }
     }
 }

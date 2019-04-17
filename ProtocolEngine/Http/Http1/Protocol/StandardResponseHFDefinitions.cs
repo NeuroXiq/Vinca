@@ -64,4 +64,29 @@ namespace ProtocolEngine.Http.Http1.Protocol
             EncodingType = codingType;
         }
     }
+
+    public struct LocationHf : IHeaderField
+    {
+        public HFType Type { get { return HFType.Location; } }
+
+        public string Location;
+        public LocationHf(string location)
+        {
+            Location = location;
+        }
+    }
+
+    public struct WWWAuthenticateHf : IHeaderField
+    {
+        public HFType Type { get { return HFType.WWWAuthenticate; } }
+
+        public string Realm;
+        public string Charset;
+
+        public WWWAuthenticateHf(string realm, string charset)
+        {
+            Realm = realm;
+            Charset = charset;
+        }
+    }
 }
